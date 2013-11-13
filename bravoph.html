@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<META http-equiv="Content-Type" content="text/html; charset=utf8">
+
+<!--
+https://developer.mozilla.org/en-US/docs/Introducing_the_Audio_API_Extension
+-->
+
+<style>
+@media (min-resolution: 2dppx) {
+  canvas {
+    transform-origin: 0 0;
+    transform: scale(0.5);
+   }
+   #wavStripContainer {
+     height: 70px; /* 1/2 + 20px for scrollbar */
+   }
+}
+</style>
+
+<h2>SDR data decoder</h2>
+
+<form id="uiForm">
+  <span style="color: #66f">Trigger level: </span>
+    <input id="triggerLevel" value=0.700 size=6 pattern='^\d?\.?\d+$'><br><!-- still no type=number, bug 344616, sigh -->
+  0-bit ratio: <input id="ratioFor0" value=0.255 size=6 pattern='^\d?\.?\d+$'><br>
+  1-bit ratio: <input id="ratioFor1" value=0.686 size=6 pattern='^\d?\.?\d+$'><br>
+  0/1 slop (+/-): <input id="ratioSlop" value=0.060 size=6 pattern='^\d?\.?\d+$'><br>
+  <input id="doHistogram" type="checkbox"><label for="doHistogram">Collect histogram</label><br>
+</form>
+
+<p>(view web console for output)</p>
+
+<audio id="audioData"
+  src="gqrx-20121209-023359.wav"
+  controls>
+</audio>
+<!--
+  src="gqrx-20121209-023359.wav"
+  src="gqrx-20121209-090023.wav"
+  src="gqrx-20121209-100026.wav"
+  src="gqrx-20121209-111054.wav"
+  src="gqrx-20121209-200019.wav" X
+  src="gqrx-20121209-203009.wav"
+
+  src="gqrx-20121209-204506.wav"
+  src="gqrx-20121209-205714.wav"
+-->
+
+<div id=wavStripContainer style="overflow: scroll;">
+  <canvas id=wavStrip width=3000 height=100 style="border: 1px solid #ddd"></canvas>
+</div>
+
+<script>
+var channels, sampleRate;
+var doHistogram, triggerLevel;
+var ratioFor0, ratioFor1, ratioSlop;
+
+
+var wav = document.getElementById('audioData');
+var strip = document.getElementById('wavStrip').getContext('2d');
+
+// canvas doesn't seem to account for this yet.
+//var hiDPI = 1;
+//if (window.matchMedia("min-resolution: 2dppx").matches)
+//  hiDPI = 0.5;
+
+var bitstream = "";
+
+var PREAMBLE_BITS = 10;
+var DATA_BITS     = 48;
+var TRAILER_BITS  = 1;
+
+var state = {
+  PREAMBLE_WAIT : 0,
+  PREAMBLE_HI : 1,
+  PREAMBLE_LO : 2,
+  DATA_HI : 3,
+  DATA_LO : 4,
+  TRAILER_HI : 5,
+  TRAILER_LO : 6,
+
+  current : 0, // for the above constants
+
+  reset: function() {
+    this.current = 0;
+    this.numSamples = 0;
+    this.numBits = -1;
+
+    this.firstSampleOfBit = 0;
+    this.preambleBits = 0;
+    this.dataBits = 0;
+    this.trailerBits = 0;
+    this.wasHi = false;
+    this.hiCount = 0;
+    this.loCount = 0;
+    this.lastSample = 0;
+    this.preambleSamplesHi = 0;
+    this.preambleSamplesLo = 0;
+  },
+
+  /* totals so far */
+  numSamples : 0,
+  numBits : -1,
+  firstSampleOfBit : 0,
+  preambleBits: 0,
+  dataBits : 0,
+  trailerBits : 0,
+
+  wasHi : false, // assumes we start out lo
+  hiCount : 0,
+  loCount : 0,
+  lastSample : 0,
+
+  preambleSamplesHi : 0,
+  preambleSamplesLo : 0,
+};
+
+var histogram = {
+  reset: function() {
+    this.numSamples= 0; this.min = 999; this.max = -999;
+    this.data = [];
+    for (var b = 0; b < this.numBuckets; b++)
+      this.data[b] = 0;
+    this.bucketSize = 1 / this.numBuckets;
+  },
+  numSamples: 0,
+  min: 999,
+  max: -999,
+  numBuckets: 20,
+  data: [],
+}
+
+function onMetadata() {
+  wav.muted = true;
+  console.log("--- audio metadata for " + wav.src + "---");
+  channels = wav.mozChannels;
+  sampleRate = wav.mozSampleRate;
+  console.log("Channels: " + channels + ", sampleRate: " + sampleRate);
+}
+
+function onPlay() {
+  /* validate and read UI */
+  var form = document.getElementById('uiForm');
+  var ok = form.checkValidity();
+  if (!ok) {
+    wav.pause();
+    alert("Something's wrong with the params specified in the form, please correct first.");
+    return;
+  }
+
+  doHistogram = document.getElementById('doHistogram').checked;
+  histogram.reset();
+
+  triggerLevel = parseFloat(document.getElementById('triggerLevel').value);
+  ratioFor0    = parseFloat(document.getElementById('ratioFor0').value);
+  ratioFor1    = parseFloat(document.getElementById('ratioFor1').value);
+  ratioSlop    = parseFloat(document.getElementById('ratioSlop').value);
+
+  strip.clearRect(0, 0, strip.canvas.width, strip.canvas.height);
+  var h = 100;
+  var w = 3000;
+  var y;
+  // Draw scale lines at 10% interval
+  strip.lineWidth = 1.0;
+  strip.strokeStyle = "#eee";
+  strip.beginPath();
+  y = 1 * (h/10); strip.moveTo(0, y);  strip.lineTo(w, y);
+  y = 2 * (h/10); strip.moveTo(0, y);  strip.lineTo(w, y);
+  y = 3 * (h/10); strip.moveTo(0, y);  strip.lineTo(w, y);
+  y = 4 * (h/10); strip.moveTo(0, y);  strip.lineTo(w, y);
+  y = 5 * (h/10); strip.moveTo(0, y);  strip.lineTo(w, y);
+  y = 6 * (h/10); strip.moveTo(0, y);  strip.lineTo(w, y);
+  y = 7 * (h/10); strip.moveTo(0, y);  strip.lineTo(w, y);
+  y = 8 * (h/10); strip.moveTo(0, y);  strip.lineTo(w, y);
+  y = 9 * (h/10); strip.moveTo(0, y);  strip.lineTo(w, y);
+  strip.stroke();
+
+  // Draw threshold line
+  strip.strokeStyle = "#aaf";
+  strip.beginPath();
+  y = (1 - triggerLevel) * h; strip.moveTo(0, y);  strip.lineTo(w, y);
+  strip.stroke();
+}
+
+function onEnded() {
+  if (doHistogram) {
+    console.log("-- histogram --");
+    console.log("size: " + histogram.numSamples);
+    console.log("min: " + histogram.min);
+    console.log("max: " + histogram.max);
+    console.log("bucketSize: " + histogram.bucketSize + " (" + histogram.numBuckets + " buckets)");
+    var bucketData = "";
+    for (b = 0; b < histogram.data.length; b++) {
+      // skip initial empty buckets
+      if (histogram.data[b] == 0) continue;
+      bucketData += "b[" + b + "]=" + histogram.data[b] + " ";
+    }
+  console.log(bucketData);
+  }
+}
+
+function onAudioAvailable(event) {
+
+  // Float32Array
+  // channels are interleaved, so data for a 2-channel track would be:
+  //  [s1_c1, s1_c2, s2_c1, s2_c2, ...]
+  var data = event.frameBuffer;
+  var time = event.time.toFixed(6);
+
+  // I'm getting 2048 samples per call
+  //console.log("onAudio: got " + data.length + " samples @ " + time);
+
+  var CHANNEL = 0;
+  var len = data.length;
+
+  // Look at each sample, skipping over (interleaved) samples from other channels.
+  for (var i = CHANNEL; i < len; i += channels) {
+    var sample = data[i];
+    // normalize from [-1,1] to [0,1]
+    sample += 1;
+    sample /= 2;
+
+    /* ********** histogram generation ********** */
+
+    if (doHistogram) {
+      histogram.numSamples++;
+      if (sample > histogram.max) { histogram.max = sample; }
+      if (sample < histogram.min) { histogram.min = sample; }
+
+      var bucketNum = Math.floor(sample / histogram.bucketSize);
+      histogram.data[bucketNum]++;
+    }
+
+    /* ********** trigger tests ********** */
+    var wasHi = state.wasHi;
+    var isHi = (sample >= triggerLevel);
+    var isRisingEdge = isHi && !wasHi;
+    var isFallingEdge = !isHi && wasHi;
+    state.wasHi = isHi;
+
+    /* State handling */
+    if (isRisingEdge) {
+      //console.log("^^^ edge ^^^");
+
+      switch (state.current) {
+        case state.PREAMBLE_WAIT:
+          state.current = state.PREAMBLE_HI;
+          break;
+        case state.PREAMBLE_HI:
+          throw "unexpected rising state PREAMBLE_HI";
+        case state.PREAMBLE_LO:
+          state.preambleBits++;
+          onPreambleBit();
+          if(state.preambleBits < PREAMBLE_BITS) {
+            state.current = state.PREAMBLE_HI;
+          } else {
+            onPreambleEnded()
+            state.current = state.DATA_HI;
+          }
+          break;
+        case state.DATA_LO:
+          state.dataBits++;
+          onDataBit();
+          if (state.dataBits < DATA_BITS) {
+            state.current = state.DATA_HI;
+          } else {
+            onDataEnded();
+            state.current = state.TRAILER_HI;
+          }
+          break;
+        case state.DATA_HI:
+          throw "unexpected rising state DATA_HI";
+        case state.TRAILER_HI:
+          throw "unexpected rising state TRAILER_HI";
+        case state.TRAILER_LO:
+          state.trailerBits++;
+          onTrailerBit();
+          if(state.trailerBits < TRAILER_BITS) {
+            state.current = state.TRAILER_HI;
+          } else {
+            // this is actually unexpected, because when the trailer finishes
+            // there won't be a rising edge until the next (distant)
+            // databurst. And so we actually detect trailer-end via a timeout.
+            throw "unexpected rising state TRAILER_LO";
+            // onTrailerEnded()
+            // state.current = state.PREAMBLE_WAIT;
+          }
+        default:
+          throw "unhandled rising state " + state.current;
+      }
+      // Rising edge marks the start of something new, so reset hi/lo counts.
+      state.hiCount = 0;
+      state.loCount = 0;
+    } else if (isFallingEdge) {
+      //console.log("vvv edge vvv");
+      drawFallingEdge();
+
+      switch (state.current) {
+        case state.PREAMBLE_WAIT:
+          throw "unexpected falling state PREAMBLE_WAIT";
+        case state.PREAMBLE_HI:
+          state.current = state.PREAMBLE_LO;
+          break;
+        case state.PREAMBLE_LO:
+          throw "unexpected falling state PREAMBLE_LO";
+        case state.DATA_HI:
+          state.current = state.DATA_LO;
+          break;
+        case state.DATA_LO:
+          throw "unexpected falling state DATA_LO";
+        case state.TRAILER_HI:
+          state.current = state.TRAILER_LO;
+          break;
+        case state.TRAILER_LO:
+          throw "unexpected falling state TRAILER_LO";
+        default:
+          throw "unhandled falling state " + state.current;
+      }
+    }
+
+   // The trailer doesn't actually end with a rising edge (it just stays low),
+   // so detect this as a special timeout
+   if (state.current == state.TRAILER_LO && state.loCount > 100 && state.trailerBits == TRAILER_BITS - 1) {
+     state.trailerBits++;
+     onTrailerBit();
+     onTrailerEnded();
+     state.current = state.PREAMBLE_WAIT;
+     state.reset();
+   }
+
+   // XXX add some hiCount / loCount sanity checks (when not waiting for preamble)
+
+if (state.current > state.PREAMBLE_WAIT) {
+  var h = 100;
+  var lastX = state.numSamples- 1;
+
+  strip.strokeStyle = "rgb(0,0,0)";
+  strip.lineWidth = 1.0;
+  strip.beginPath();
+  strip.moveTo(lastX, (1 - state.lastSample) * h); // wrong for first plot, but meh
+  strip.lineTo(state.numSamples, (1 - sample) * h);
+  strip.stroke();
+  state.numSamples++;
+}
+
+   switch (state.current) {
+     case state.PREAMBLE_WAIT:
+       /* NOP */
+       break;
+     case state.PREAMBLE_HI:
+     case state.DATA_HI:
+     case state.TRAILER_HI:
+       state.hiCount++;
+       break;
+     case state.PREAMBLE_LO:
+     case state.DATA_LO:
+     case state.TRAILER_LO:
+       state.loCount++;
+       break;
+    }
+
+    state.lastSample = sample;
+    if (isRisingEdge) {
+      state.firstSampleOfBit = state.numSamples;
+      state.numBits++;
+    }
+
+  } // for each sample
+}
+
+function onPreambleEnded() {
+  //console.log("--- preamble ended ---")
+  var l = state.preambleSamplesLo;
+  var h = state.preambleSamplesHi;
+  //console.log("p: lo=" + l + ", hi=" + h + ", sum=" + (l+h));
+  // (I'm getting 488 samples / bit, evenly between hi/lo.)
+}
+
+function onDataEnded() {
+  //console.log("--- data ended ---")
+}
+
+function onTrailerEnded() {
+  //console.log("--- trailer ended ---")
+  bitsToHex(bitstream);
+  bitstream = "";
+}
+
+function onPreambleBit() {
+  state.preambleSamplesHi += state.loCount;
+  state.preambleSamplesLo += state.hiCount;
+  bitstream += 'p';
+  drawBitRegion('p');
+}
+
+function onDataBit() {
+  var count = state.hiCount + state.loCount;
+  var ratioHi = state.hiCount / count;
+  var ratioLo = state.loCount / count;
+
+  // Use both the hi and lo ratios to get a better average, since lo+hi=1 is true.
+  var ratio = (ratioHi + (1 - ratioLo)) / 2;
+
+  //console.log("loCount=" + state.loCount + " hiCount=" + state.hiCount + " sum=" + (state.loCount + state.hiCount));
+  //console.log("ratio = " + ratio.toFixed(4));
+  // XXX Sanity check? Match to preamble timing?
+
+  var bit = intrepretBit(ratio);
+  bitstream += bit;
+
+  drawBitRegion(bit);
+}
+
+function onTrailerBit() {
+  bitstream += 't';
+  drawBitRegion('t');
+}
+
+function drawBitRegion(label) {
+  var h = 100;
+  var regionWidth = (state.numSamples - state.firstSampleOfBit);
+
+  // Alternate background for each bit so they're easy to distinguish.
+  if (state.numBits % 2) {
+    strip.fillStyle = "rgba(0,0,0,0.05)";
+    strip.fillRect(state.firstSampleOfBit, 0, regionWidth, h);
+  }
+
+  var textX, centerX = state.firstSampleOfBit + (regionWidth / 2); // start at center
+
+  strip.fillStyle = "#aaa";
+  // textX = centerX - (strip.measureText(state.numBits).width / 2);
+  // strip.fillText(state.numBits, textX, 19);
+  strip.fillText(state.numBits, state.firstSampleOfBit, h * (1 - triggerLevel) + 9);
+
+  if (label == 'p' || label == 't')
+    strip.fillStyle = "#aaa";
+  else if (label.toLowerCase() == 'e' || label == 'x')
+    strip.fillStyle = "#c00";
+  else
+    strip.fillStyle = "#000";
+  textX = centerX - (strip.measureText(label).width / 2);
+  strip.fillText(label, textX, h - 2);
+}
+
+function drawFallingEdge() {
+  var h = 100;
+  strip.lineWidth = 1.0;
+  strip.strokeStyle = "rgb(245,245,245)";
+  strip.beginPath();
+  strip.moveTo(state.numSamples, 0);  strip.lineTo(state.numSamples, h);
+  strip.stroke();
+}
+
+function intrepretBit(ratio) {
+  var thisBit;
+  if (ratio < (ratioFor0 - ratioSlop))
+    thisBit = 'e'; // short
+  else if (ratio <= (ratioFor0 + ratioSlop))
+    thisBit = '0';
+  else if (ratio < (ratioFor1 - ratioSlop))
+    thisBit = 'x'; // ambigious
+  else if (ratio <= (ratioFor1 + ratioSlop))
+    thisBit = '1';
+  else
+    thisBit = 'E'; // long
+
+  if (thisBit != '0' && thisBit != '1')
+    console.log("Bad bit. Ratio is " + ratio);
+
+  return thisBit;
+}
+
+/*
+ * Prints a string like "1010001011110101" as a hex value
+ */
+function bitsToHex(bits) {
+  // xxx should alert if p/t count is unexpected
+  console.log("STREAM: " + bitstream)
+
+  // first, strip preamble/trailer markers
+  var pattern = /p{10}([01]+)t$/;
+
+  var match = pattern.exec(bits);
+  if (!match) {
+    console.log("WARN: couldn't parse bits to hex");
+    return;
+  }
+
+  var bits = match[1];
+  if (bits % 4) {
+    console.log("WARN: unexpected length of bitstream");
+    return;
+  }
+
+  //console.log(parseInt(bits,2).toString(16));
+  var hex = "";
+  for (var i = 0; i < bits.length; i += 4) {
+    var nibble = bits.substr(i,4);
+    switch (nibble) {
+      case '0000': hex += '0'; break;
+      case '0001': hex += '1'; break;
+      case '0010': hex += '2'; break;
+      case '0011': hex += '3'; break;
+      case '0100': hex += '4'; break;
+      case '0101': hex += '5'; break;
+      case '0110': hex += '6'; break;
+      case '0111': hex += '7'; break;
+      case '1000': hex += '8'; break;
+      case '1001': hex += '9'; break;
+      case '1010': hex += 'a'; break;
+      case '1011': hex += 'b'; break;
+      case '1100': hex += 'c'; break;
+      case '1101': hex += 'd'; break;
+      case '1110': hex += 'e'; break;
+      case '1111': hex += 'f'; break;
+    }
+  }
+
+  console.log(hex);
+}
+
+wav.addEventListener('loadedmetadata',     onMetadata);
+wav.addEventListener('play',               onPlay);
+wav.addEventListener('MozAudioAvailable',  onAudioAvailable);
+wav.addEventListener('ended',              onEnded);
+
+</script>
