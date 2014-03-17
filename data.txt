@@ -1,0 +1,524 @@
+LOGGED DATA
+
+While recording RF data in GQRX, I wrote down the pH value displayed on the Bravo
+monitoring device. That data is transcribed here, along with the output from
+my bravoph.html decoder.
+
+
+Sample A
+========
+(Oops, either I didn't write down the pH data or I lost it.)
+
+--- audio metadata for http://dolske.net/hacks/bravoph/gqrx-20121209-023359.wav---
+Channels: 2, sampleRate: 48000
+-- stats of first 1000 samples --
+avg = 0.464 / min = 0.453 / max = 0.491
+Packet #1 @ 4.610979: pppppppppp111110111111101000000100110100011101000001100101t
+Packet data: fbfa04d1d065 (ph1 = 209 / ph2 = 208 / checksum ok)
+Packet #2 @ 18.181563: pppppppppp111110111111101000000100110100011101000101100100t
+Packet data: fbfa04d1d164 (ph1 = 209 / ph2 = 209 / checksum ok)
+
+
+Sample B
+========
+1 7.8
+2 7.7
+3 7.6
+
+--- audio metadata for http://dolske.net/hacks/bravoph/gqrx-20121209-090023.wav---
+Channels: 2, sampleRate: 48000
+-- stats of first 1000 samples --
+avg = 0.488 / min = 0.452 / max = 0.576
+Packet #1 @ 1.651000: pppppppppp111110111111101000000100101111101011111110001001t
+Packet data: fbfa04bebf89 (ph1 = 190 / ph2 = 191 / checksum ok)
+Packet #2 @ 15.185625: pppppppppp111110111111101000000100110000101100000110000011t
+Packet data: fbfa04c2c183 (ph1 = 194 / ph2 = 193 / checksum ok)
+Packet #3 @ 28.720250: pppppppppp111110111111101000000100110000011011111110000110t
+Packet data: fbfa04c1bf86 (ph1 = 193 / ph2 = 191 / checksum ok)
+
+
+Sample C
+========
+(Also wrote down a 7th reading for 3.3, but that's not in sample)
+1 7.2
+2 6.5
+3 4.4
+4 4.1
+5 4.1
+6 4.6
+
+--- audio metadata for http://dolske.net/hacks/bravoph/gqrx-20121209-100026.wav---
+Channels: 2, sampleRate: 48000
+-- stats of first 1000 samples --
+avg = 0.540 / min = 0.448 / max = 0.703
+Packet #1 @ 5.046021: pppppppppp111110111111101000000100101101001011011110011011t
+Packet data: fbfa04b4b79b (ph1 = 180 / ph2 = 183 / checksum ok)
+Packet #2 @ 18.527042: pppppppppp111110111111101000000100101101001010100110101001t
+Packet data: fbfa04b4a9a9 (ph1 = 180 / ph2 = 169 / checksum ok)
+Packet #3 @ 31.715876: pppppppppp111110111111101000000100100110111000000011101011t
+Packet data: fbfa049b80eb (ph1 = 155 / ph2 = 128 / checksum ok)
+Packet #4 @ 44.701334: pppppppppp111110111111101000000100100001010111101000000111t
+Packet data: fbfa04857a07 (ph1 = 133 / ph2 = 122 / checksum ok)
+Packet #5 @ 57.590127: pppppppppp111110111111101000000100100001011000101011110111t
+Packet data: fbfa04858af7 (ph1 = 133 / ph2 = 138 / checksum ok)
+Packet #6 @ 70.399691: pppppppppp111110111111101000000100100001001000001111111111t
+Packet data: fbfa048483ff (ph1 = 132 / ph2 = 131 / checksum ok)
+
+
+Sample D
+========
+(Wall clock at start = 3:11)
+1 ---
+2 7.5
+3 7.5
+4 7.5
+5 7.7
+6 7.5
+7 7.6
+8 7.5
+9 7.5
+10 7.6
+11 7.5
+12 7.5
+13 7.6
+14 7.6
+
+--- audio metadata for http://dolske.net/hacks/bravoph/gqrx-20121209-111054.wav---
+Channels: 2, sampleRate: 48000
+-- stats of first 1000 samples --
+avg = 0.497 / min = 0.452 / max = 0.581
+Packet #1 @ 3.948667: pppppppppp111110111111101000000100101110111011110110001110t
+Packet data: fbfa04bbbd8e (ph1 = 187 / ph2 = 189 / checksum ok)
+Packet #2 @ 17.484917: pppppppppp111110111111101000000100101111001011110010001110t
+Packet data: fbfa04bcbc8e (ph1 = 188 / ph2 = 188 / checksum ok)
+Packet #3 @ 31.021146: pppppppppp111110111111101000000100101110111011110010001111t
+Packet data: fbfa04bbbc8f (ph1 = 187 / ph2 = 188 / checksum ok)
+Packet #4 @ 44.557584: pppppppppp111110111111101000000100101111011011110110001100t
+Packet data: fbfa04bdbd8c (ph1 = 189 / ph2 = 189 / checksum ok)
+Packet #5 @ 58.094147: pppppppppp111110111111101000000100110000011100000110000100t
+Packet data: fbfa04c1c184 (ph1 = 193 / ph2 = 193 / checksum ok)
+Packet #6 @ 71.630357: pppppppppp111110111111101000000100101111011011110010001101t
+Packet data: fbfa04bdbc8d (ph1 = 189 / ph2 = 188 / checksum ok)
+Packet #7 @ 85.166623: pppppppppp111110111111101000000100110000011011111110000110t
+Packet data: fbfa04c1bf86 (ph1 = 193 / ph2 = 191 / checksum ok)
+Packet #8 @ 98.702816: pppppppppp111110111111101000000100101111001011110010001110t
+Packet data: fbfa04bcbc8e (ph1 = 188 / ph2 = 188 / checksum ok)
+Packet #9 @ 112.238892: pppppppppp111110111111101000000100101111101011110010001100t
+Packet data: fbfa04bebc8c (ph1 = 190 / ph2 = 188 / checksum ok)
+Packet #10 @ 125.774835: pppppppppp111110111111101000000100101111111011111010001001t
+Packet data: fbfa04bfbe89 (ph1 = 191 / ph2 = 190 / checksum ok)
+Packet #11 @ 139.310588: pppppppppp111110111111101000000100101110111011110010001111t
+Packet data: fbfa04bbbc8f (ph1 = 187 / ph2 = 188 / checksum ok)
+Packet #12 @ 152.845709: pppppppppp111110111111101000000100101110001011110010010010t
+Packet data: fbfa04b8bc92 (ph1 = 184 / ph2 = 188 / checksum ok)
+Packet #13 @ 166.376086: pppppppppp111110111111101000000100101111101011111010001010t
+Packet data: fbfa04bebe8a (ph1 = 190 / ph2 = 190 / checksum ok)
+Packet #14 @ 179.905278: pppppppppp111110111111101000000100101111101011111110001001t
+Packet data: fbfa04bebf89 (ph1 = 190 / ph2 = 191 / checksum ok)
+
+
+Sample E
+========
+(Wall clock at start = 11:59)
+(Removed #13/14/15/16 from analyzed sample, due to high noise level.)
+1 8.2
+2 8.2
+3 8.2
+4 7.8
+5 8.0
+6 8.2
+7 8.1
+8 8.1
+9 7.9
+10 8.2
+11 7.8
+12 7.9
+13 8.1 (removed)
+14 8.2 (removed)
+15 7.8 (removed)
+16 8.0 (removed)
+17 3.8
+18 3.3
+19 4.1
+20 5.8
+21 6.8
+22 7.0
+
+--- audio metadata for http://dolske.net/hacks/bravoph/gqrx-20121209-200019-amped-no13-14-15-16.wav---
+Channels: 2, sampleRate: 48000
+-- stats of first 1000 samples --
+avg = 0.120 / min = 0.018 / max = 0.350
+Packet #1 @ 0.008979: pppppppppp111110111111101000000100110010101100100101110011t
+Packet data: fbfa04cac973 (ph1 = 202 / ph2 = 201 / checksum ok)
+Packet #2 @ 0.079500: pppppppppp111110111111101000000100110011001100100101110001t
+Packet data: fbfa04ccc971 (ph1 = 204 / ph2 = 201 / checksum ok)
+Packet #3 @ 0.153458: pppppppppp111110111111101000000100110010001100101101110011t
+Packet data: fbfa04c8cb73 (ph1 = 200 / ph2 = 203 / checksum ok)
+Packet #4 @ 0.228958: pppppppppp111110111111101000000100110010101100001001111010t
+Packet data: fbfa04cac27a (ph1 = 202 / ph2 = 194 / checksum ok)
+Packet #5 @ 0.299125: pppppppppp111110111111101000000100110010111100011101110100t
+Packet data: fbfa04cbc774 (ph1 = 203 / ph2 = 199 / checksum ok)
+Packet #6 @ 0.369688: pppppppppp111110111111101000000100110010101100100101110011t
+Packet data: fbfa04cac973 (ph1 = 202 / ph2 = 201 / checksum ok)
+Packet #7 @ 0.441792: pppppppppp111110111111101000000100110001111100100001110111t
+Packet data: fbfa04c7c877 (ph1 = 199 / ph2 = 200 / checksum ok)
+Packet #8 @ 0.516563: pppppppppp111110111111101000000100110000011100100001111101t
+Packet data: fbfa04c1c87d (ph1 = 193 / ph2 = 200 / checksum ok)
+Packet #9 @ 0.591063: pppppppppp111110111111101000000100110011101100010101110011t
+Packet data: fbfa04cec573 (ph1 = 206 / ph2 = 197 / checksum ok)
+Packet #10 @ 0.664104: pppppppppp111110111111101000000100110001011100100101111000t
+Packet data: fbfa04c5c978 (ph1 = 197 / ph2 = 201 / checksum ok)
+Packet #11 @ 0.739729: pppppppppp111110111111101000000100110001011100001101111110t
+Packet data: fbfa04c5c37e (ph1 = 197 / ph2 = 195 / checksum ok)
+Packet #12 @ 0.813250: pppppppppp111110111111101000000100110010011100010101111000t
+Packet data: fbfa04c9c578 (ph1 = 201 / ph2 = 197 / checksum ok)
+...nuked 4...
+Packet #13 @ 0.889896: pppppppppp111110111111101000000100110010010111001011001011t
+Packet data: fbfa04c972cb (ph1 = 201 / ph2 = 114 / checksum ok)
+Packet #14 @ 0.962250: pppppppppp111110111111101000000100011001000110100100111001t
+Packet data: fbfa04646939 (ph1 = 100 / ph2 = 105 / checksum ok)
+Packet #15 @ 1.036458: pppppppppp111110111111101000000100011101100111101000010110t
+Packet data: fbfa04767a16 (ph1 = 118 / ph2 = 122 / checksum ok)
+Packet #16 @ 1.109750: pppppppppp111110111111101000000100100000101001101011101010t
+Packet data: fbfa04829aea (ph1 = 130 / ph2 = 154 / checksum ok)
+Packet #17 @ 1.184458: pppppppppp111110111111101000000100101010101010111110101101t
+Packet data: fbfa04aaafad (ph1 = 170 / ph2 = 175 / checksum ok)
+Packet #18 @ 1.255042: pppppppppp111110111111101000000100101100011011001010100011t
+Packet data: fbfa04b1b2a3 (ph1 = 177 / ph2 = 178 / checksum ok)
+
+
+Sample F
+========
+(Wall clock at start = 12:30)
+1 7.8
+2 7.9
+3 7.8
+4 8.0
+5 7.8
+6 7.8
+7 7.8
+8 7.9
+9 7.7
+10 7.9
+11 7.9
+12 7.7
+13 7.6
+14 7.8
+15 8.2
+16 7.6
+17 8.2
+18 7.9
+19 8.0
+20 7.8
+21 8.1
+22 8.3
+23 8.1
+24 7.9
+25 8.2
+26 8.4
+27 7.9
+
+--- audio metadata for http://dolske.net/hacks/bravoph/gqrx-20121209-203009.wav---
+Channels: 2, sampleRate: 48000
+-- stats of first 1000 samples --
+avg = 0.481 / min = 0.452 / max = 0.556
+Packet #1 @ 4.362396: pppppppppp111110111111101000000100110001011100001101111110t
+Packet data: fbfa04c5c37e (ph1 = 197 / ph2 = 195 / checksum ok)
+Packet #2 @ 17.906270: pppppppppp111110111111101000000100110001011100010101111100t
+Packet data: fbfa04c5c57c (ph1 = 197 / ph2 = 197 / checksum ok)
+Packet #3 @ 31.450250: pppppppppp111110111111101000000100110001011100001101111110t
+Packet data: fbfa04c5c37e (ph1 = 197 / ph2 = 195 / checksum ok)
+Packet #4 @ 44.994438: pppppppppp111110111111101000000100110001011100011101111010t
+Packet data: fbfa04c5c77a (ph1 = 197 / ph2 = 199 / checksum ok)
+Packet #5 @ 58.538668: pppppppppp111110111111101000000100110000111100001010000001t
+Packet data: fbfa04c3c281 (ph1 = 195 / ph2 = 194 / checksum ok)
+Packet #6 @ 72.083232: pppppppppp111110111111101000000100110001011100001101111110t
+Packet data: fbfa04c5c37e (ph1 = 197 / ph2 = 195 / checksum ok)
+Packet #7 @ 85.628045: pppppppppp111110111111101000000100110001011100001101111110t
+Packet data: fbfa04c5c37e (ph1 = 197 / ph2 = 195 / checksum ok)
+Packet #8 @ 99.172956: pppppppppp111110111111101000000100110000111100010101111110t
+Packet data: fbfa04c3c57e (ph1 = 195 / ph2 = 197 / checksum ok)
+Packet #9 @ 112.717752: pppppppppp111110111111101000000100110000101100000110000011t
+Packet data: fbfa04c2c183 (ph1 = 194 / ph2 = 193 / checksum ok)
+Packet #10 @ 126.262773: pppppppppp111110111111101000000100110000011100010110000000t
+Packet data: fbfa04c1c580 (ph1 = 193 / ph2 = 197 / checksum ok)
+Packet #11 @ 139.807734: pppppppppp111110111111101000000100110001111100010101111010t
+Packet data: fbfa04c7c57a (ph1 = 199 / ph2 = 197 / checksum ok)
+Packet #12 @ 153.352750: pppppppppp111110111111101000000100110000011100000110000100t
+Packet data: fbfa04c1c184 (ph1 = 193 / ph2 = 193 / checksum ok)
+Packet #13 @ 166.897775: pppppppppp111110111111101000000100101111111011111110001000t
+Packet data: fbfa04bfbf88 (ph1 = 191 / ph2 = 191 / checksum ok)
+Packet #14 @ 180.442525: pppppppppp111110111111101000000100110000111100001010000001t
+Packet data: fbfa04c3c281 (ph1 = 195 / ph2 = 194 / checksum ok)
+Packet #15 @ 193.987207: pppppppppp111110111111101000000100110010001100101001110100t
+Packet data: fbfa04c8ca74 (ph1 = 200 / ph2 = 202 / checksum ok)
+Packet #16 @ 207.532233: pppppppppp111110111111101000000100110010011011111001111111t
+Packet data: fbfa04c9be7f (ph1 = 201 / ph2 = 190 / checksum ok)
+Packet #17 @ 221.077234: pppppppppp111110111111101000000100110001011100100101111000t
+Packet data: fbfa04c5c978 (ph1 = 197 / ph2 = 201 / checksum ok)
+Packet #18 @ 234.622250: pppppppppp111110111111101000000100110000111100010101111110t
+Packet data: fbfa04c3c57e (ph1 = 195 / ph2 = 197 / checksum ok)
+Packet #19 @ 248.166838: pppppppppp111110111111101000000100110001011100011101111010t
+Packet data: fbfa04c5c77a (ph1 = 197 / ph2 = 199 / checksum ok)
+Packet #20 @ 261.710223: pppppppppp111110111111101000000100110001111100001001111101t
+Packet data: fbfa04c7c27d (ph1 = 199 / ph2 = 194 / checksum ok)
+Packet #21 @ 275.252822: pppppppppp111110111111101000000100110010011100100001110101t
+Packet data: fbfa04c9c875 (ph1 = 201 / ph2 = 200 / checksum ok)
+Packet #22 @ 288.794775: pppppppppp111110111111101000000100110010101100110001110000t
+Packet data: fbfa04cacc70 (ph1 = 202 / ph2 = 204 / checksum ok)
+Packet #23 @ 302.336843: pppppppppp111110111111101000000100110100011100100001101101t
+Packet data: fbfa04d1c86d (ph1 = 209 / ph2 = 200 / checksum ok)
+Packet #24 @ 315.879110: pppppppppp111110111111101000000100110010101100010101110111t
+Packet data: fbfa04cac577 (ph1 = 202 / ph2 = 197 / checksum ok)
+Packet #25 @ 329.421573: pppppppppp111110111111101000000100110010001100100101110101t
+Packet data: fbfa04c8c975 (ph1 = 200 / ph2 = 201 / checksum ok)
+Packet #26 @ 342.964244: pppppppppp111110111111101000000100110010111100111001101101t
+Packet data: fbfa04cbce6d (ph1 = 203 / ph2 = 206 / checksum ok)
+Packet #27 @ 356.507447: pppppppppp111110111111101000000100110011101100010101110011t
+Packet data: fbfa04cec573 (ph1 = 206 / ph2 = 197 / checksum ok)
+
+
+Sample G
+========
+(Wall clock at start = 12:45)
+1 7.8
+2 7.5
+3 7.6
+4 7.6
+5 7.7
+6 8.2
+7 7.8
+8 ---
+9 7.9
+10 7.6
+11 8.2
+12 8.4
+13 8.5
+14 8.8
+15 8.4
+16 8.5
+17 ---
+18 ---
+19 8.2
+20 8.3
+21 8.5
+22 8.2
+23 8.4
+24 8.2
+25 8.3
+26 7.8
+27 7.8
+28 8.2
+29 8.4
+30 8.3
+31 8.5
+32 8.4
+33 8.6
+34 8.9
+35 8.6
+36 8.4
+
+--- audio metadata for http://dolske.net/hacks/bravoph/gqrx-20121209-204506.wav---
+Channels: 2, sampleRate: 48000
+-- stats of first 1000 samples --
+avg = 0.507 / min = 0.452 / max = 0.623
+Packet #1 @ 1.140604: pppppppppp111110111111101000000100110000011100001010000011t
+Packet data: fbfa04c1c283 (ph1 = 193 / ph2 = 194 / checksum ok)
+Packet #2 @ 14.682834: pppppppppp111110111111101000000100101111111011110010001011t
+Packet data: fbfa04bfbc8b (ph1 = 191 / ph2 = 188 / checksum ok)
+Packet #3 @ 28.225168: pppppppppp111110111111101000000100110000011011111110000110t
+Packet data: fbfa04c1bf86 (ph1 = 193 / ph2 = 191 / checksum ok)
+Packet #4 @ 41.767230: pppppppppp111110111111101000000100110000111011111010000101t
+Packet data: fbfa04c3be85 (ph1 = 195 / ph2 = 190 / checksum ok)
+Packet #5 @ 55.309835: pppppppppp111110111111101000000100110010101100000101111011t
+Packet data: fbfa04cac17b (ph1 = 202 / ph2 = 193 / checksum ok)
+Packet #6 @ 68.830314: pppppppppp111110111111101000000100110010001100100101110101t
+Packet data: fbfa04c8c975 (ph1 = 200 / ph2 = 201 / checksum ok)
+Packet #7 @ 82.047462: pppppppppp111110111111101000000100110000111100001010000001t
+Packet data: fbfa04c3c281 (ph1 = 195 / ph2 = 194 / checksum ok)
+Packet #8 @ 95.113044: pppppppppp111110111111101000000100101111101011101110001101t
+Packet data: fbfa04bebb8d (ph1 = 190 / ph2 = 187 / checksum ok)
+Packet #9 @ 108.197815: pppppppppp111110111111101000000100110000011100010110000000t
+Packet data: fbfa04c1c580 (ph1 = 193 / ph2 = 197 / checksum ok)
+Packet #10 @ 121.359877: pppppppppp111110111111101000000100110001011011111010000011t
+Packet data: fbfa04c5be83 (ph1 = 197 / ph2 = 190 / checksum ok)
+Packet #11 @ 134.582815: pppppppppp111110111111101000000100110010101100101101110001t
+Packet data: fbfa04cacb71 (ph1 = 202 / ph2 = 203 / checksum ok)
+Packet #12 @ 147.851627: pppppppppp111110111111101000000100110001011100111001110011t
+Packet data: fbfa04c5ce73 (ph1 = 197 / ph2 = 206 / checksum ok)
+Packet #13 @ 161.156207: pppppppppp111110111111101000000100110100001101000001100110t
+Packet data: fbfa04d0d066 (ph1 = 208 / ph2 = 208 / checksum ok)
+Packet #14 @ 174.490482: pppppppppp111110111111101000000100110100101101011001011110t
+Packet data: fbfa04d2d65e (ph1 = 210 / ph2 = 214 / checksum ok)
+Packet #15 @ 187.848752: pppppppppp111110111111101000000100110011111100111101101000t
+Packet data: fbfa04cfcf68 (ph1 = 207 / ph2 = 207 / checksum ok)
+Packet #16 @ 201.227337: pppppppppp111110111111101000000100110011001101000001101010t
+Packet data: fbfa04ccd06a (ph1 = 204 / ph2 = 208 / checksum ok)
+Packet #17 @ 214.623853: pppppppppp111110111111101000000100110011001100110001101110t
+Packet data: fbfa04cccc6e (ph1 = 204 / ph2 = 204 / checksum ok)
+Packet #18 @ 228.036482: pppppppppp111110111111101000000100110100001100101001101100t
+Packet data: fbfa04d0ca6c (ph1 = 208 / ph2 = 202 / checksum ok)
+Packet #19 @ 241.461002: pppppppppp111110111111101000000100110011101100101101101101t
+Packet data: fbfa04cecb6d (ph1 = 206 / ph2 = 203 / checksum ok)
+Packet #20 @ 254.893733: pppppppppp111110111111101000000100110011001100110001101110t
+Packet data: fbfa04cccc6e (ph1 = 204 / ph2 = 204 / checksum ok)
+Packet #21 @ 268.336929: pppppppppp111110111111101000000100110101101101000001100000t
+Packet data: fbfa04d6d060 (ph1 = 214 / ph2 = 208 / checksum ok)
+Packet #22 @ 281.790660: pppppppppp111110111111101000000100110010001100100101110101t
+Packet data: fbfa04c8c975 (ph1 = 200 / ph2 = 201 / checksum ok)
+Packet #23 @ 295.253431: pppppppppp111110111111101000000100110011111100111101101000t
+Packet data: fbfa04cfcf68 (ph1 = 207 / ph2 = 207 / checksum ok)
+Packet #24 @ 308.724598: pppppppppp111110111111101000000100110010101100100101110011t
+Packet data: fbfa04cac973 (ph1 = 202 / ph2 = 201 / checksum ok)
+Packet #25 @ 322.183194: pppppppppp111110111111101000000100110011001100110001101110t
+Packet data: fbfa04cccc6e (ph1 = 204 / ph2 = 204 / checksum ok)
+Packet #26 @ 335.358695: pppppppppp111110111111101000000100110010011100001001111011t
+Packet data: fbfa04c9c27b (ph1 = 201 / ph2 = 194 / checksum ok)
+Packet #27 @ 348.372177: pppppppppp111110111111101000000100110000011100001010000011t
+Packet data: fbfa04c1c283 (ph1 = 193 / ph2 = 194 / checksum ok)
+Packet #28 @ 361.429094: pppppppppp111110111111101000000100110001011100100101111000t
+Packet data: fbfa04c5c978 (ph1 = 197 / ph2 = 201 / checksum ok)
+Packet #29 @ 374.560222: pppppppppp111110111111101000000100110010011100111001101111t
+Packet data: fbfa04c9ce6f (ph1 = 201 / ph2 = 206 / checksum ok)
+Packet #30 @ 387.751942: pppppppppp111110111111101000000100110010101100110001110000t
+Packet data: fbfa04cacc70 (ph1 = 202 / ph2 = 204 / checksum ok)
+Packet #31 @ 400.991365: pppppppppp111110111111101000000100110100001101000001100110t
+Packet data: fbfa04d0d066 (ph1 = 208 / ph2 = 208 / checksum ok)
+Packet #32 @ 414.268046: pppppppppp111110111111101000000100110101111100111001100001t
+Packet data: fbfa04d7ce61 (ph1 = 215 / ph2 = 206 / checksum ok)
+Packet #33 @ 427.574673: pppppppppp111110111111101000000100110011001101001001101000t
+Packet data: fbfa04ccd268 (ph1 = 204 / ph2 = 210 / checksum ok)
+Packet #34 @ 440.907329: pppppppppp111110111111101000000100110101111101100001010111t
+Packet data: fbfa04d7d857 (ph1 = 215 / ph2 = 216 / checksum ok)
+Packet #35 @ 454.262401: pppppppppp111110111111101000000100110101111101001001011101t
+Packet data: fbfa04d7d25d (ph1 = 215 / ph2 = 210 / checksum ok)
+Packet #36 @ 467.637095: pppppppppp111110111111101000000100110100011100111001100111t
+Packet data: fbfa04d1ce67 (ph1 = 209 / ph2 = 206 / checksum ok)
+
+
+Sample H
+========
+(Wall clock at start = 12:57)
+(Drinking soda from #10-#20)
+(!!! Hmm, I wrote down 39 samples, but there are only 38 in the GQRX data.)
+1 8.4
+2 8.2
+3 8.1
+4 8.5
+5 8.1
+6 8.2
+7 8.6
+8 8.3
+9 8.2
+10 7.0
+11 7.0
+12 5.0
+13 5.0
+14 4.8
+15 4.5
+16 ---
+17 5.2
+18 5.2
+19 5.3
+20 4.8
+21 5.2
+22 4.5
+23 4.6
+24 4.6
+25 5.1
+26 5.5
+27 6.7
+28 6.7
+29 6.8
+30 6.5
+31 6.3
+32 5.0
+33 5.5
+34 5.7
+35 5.7
+36 ---
+37 6.4
+38 6.1
+39 6.0
+
+--- audio metadata for http://dolske.net/hacks/bravoph/gqrx-20121209-205714.wav---
+Channels: 2, sampleRate: 48000
+-- stats of first 1000 samples --
+avg = 0.479 / min = 0.453 / max = 0.543
+Packet #1 @ 9.079021: pppppppppp111110111111101000000100110010011100101101110010t
+Packet data: fbfa04c9cb72 (ph1 = 201 / ph2 = 203 / checksum ok)
+Packet #2 @ 22.597959: pppppppppp111110111111101000000100110101011100100001101001t
+Packet data: fbfa04d5c869 (ph1 = 213 / ph2 = 200 / checksum ok)
+Packet #3 @ 36.118522: pppppppppp111110111111101000000100110010111101000101101010t
+Packet data: fbfa04cbd16a (ph1 = 203 / ph2 = 209 / checksum ok)
+Packet #4 @ 49.641063: pppppppppp111110111111101000000100110011001100100001110010t
+Packet data: fbfa04ccc872 (ph1 = 204 / ph2 = 200 / checksum ok)
+Packet #5 @ 63.165584: pppppppppp111110111111101000000100110010111100101101110000t
+Packet data: fbfa04cbcb70 (ph1 = 203 / ph2 = 203 / checksum ok)
+Packet #6 @ 76.691919: pppppppppp111110111111101000000100110100001101001001100100t
+Packet data: fbfa04d0d264 (ph1 = 208 / ph2 = 210 / checksum ok)
+Packet #7 @ 90.219560: pppppppppp111110111111101000000100110100001100110001101010t
+Packet data: fbfa04d0cc6a (ph1 = 208 / ph2 = 204 / checksum ok)
+Packet #8 @ 103.746253: pppppppppp111110111111101000000100110010101100100101110011t
+Packet data: fbfa04cac973 (ph1 = 202 / ph2 = 201 / checksum ok)
+Packet #9 @ 117.237211: pppppppppp111110111111101000000100110010101011001010001010t
+Packet data: fbfa04cab28a (ph1 = 202 / ph2 = 178 / checksum ok)
+Packet #10 @ 130.434819: pppppppppp111110111111101000000100101001111010000110111110t
+Packet data: fbfa04a7a1be (ph1 = 167 / ph2 = 161 / checksum ok)
+Packet #11 @ 143.448708: pppppppppp111110111111101000000100100000111000101111111000t
+Packet data: fbfa04838bf8 (ph1 = 131 / ph2 = 139 / checksum ok)
+Packet #12 @ 156.399627: pppppppppp111110111111101000000100100010001000100011110110t
+Packet data: fbfa048888f6 (ph1 = 136 / ph2 = 136 / checksum ok)
+Packet #13 @ 169.269839: pppppppppp111110111111101000000100100011111000011111110000t
+Packet data: fbfa048f87f0 (ph1 = 143 / ph2 = 135 / checksum ok)
+Packet #14 @ 181.975104: pppppppppp111110111111101000000100100010011000001011111011t
+Packet data: fbfa048982fb (ph1 = 137 / ph2 = 130 / checksum ok)
+Packet #15 @ 194.656902: pppppppppp111110111111101000000100100001111000000111111110t
+Packet data: fbfa048781fe (ph1 = 135 / ph2 = 129 / checksum ok)
+Packet #16 @ 207.458000: pppppppppp111110111111101000000100100001011000111111110010t
+Packet data: fbfa04858ff2 (ph1 = 133 / ph2 = 143 / checksum ok)
+Packet #17 @ 220.296771: pppppppppp111110111111101000000100100101001000000111110001t
+Packet data: fbfa049481f1 (ph1 = 148 / ph2 = 129 / checksum ok)
+Packet #18 @ 232.992443: pppppppppp111110111111101000000100100000001001000111110101t
+Packet data: fbfa048091f5 (ph1 = 128 / ph2 = 145 / checksum ok)
+Packet #19 @ 245.762833: pppppppppp111110111111101000000100100011011000011111110010t
+Packet data: fbfa048d87f2 (ph1 = 141 / ph2 = 135 / checksum ok)
+Packet #20 @ 258.582403: pppppppppp111110111111101000000100100011011000111111101010t
+Packet data: fbfa048d8fea (ph1 = 141 / ph2 = 143 / checksum ok)
+Packet #21 @ 271.491402: pppppppppp111110111111101000000100100001111000000111111110t
+Packet data: fbfa048781fe (ph1 = 135 / ph2 = 129 / checksum ok)
+Packet #22 @ 284.288724: pppppppppp111110111111101000000100100010001000001111111011t
+Packet data: fbfa048883fb (ph1 = 136 / ph2 = 131 / checksum ok)
+Packet #23 @ 297.135905: pppppppppp111110111111101000000100100001011000010011111101t
+Packet data: fbfa048584fd (ph1 = 133 / ph2 = 132 / checksum ok)
+Packet #24 @ 310.099882: pppppppppp111110111111101000000100100010101000110111101111t
+Packet data: fbfa048a8def (ph1 = 138 / ph2 = 141 / checksum ok)
+Packet #25 @ 323.165006: pppppppppp111110111111101000000100100100011001010111100000t
+Packet data: fbfa049195e0 (ph1 = 145 / ph2 = 149 / checksum ok)
+Packet #26 @ 336.298946: pppppppppp111110111111101000000100101011111010110110101010t
+Packet data: fbfa04afadaa (ph1 = 175 / ph2 = 173 / checksum ok)
+Packet #27 @ 349.486969: pppppppppp111110111111101000000100101010101010110110101111t
+Packet data: fbfa04aaadaf (ph1 = 170 / ph2 = 173 / checksum ok)
+Packet #28 @ 362.718966: pppppppppp111110111111101000000100101011101010111010101010t
+Packet data: fbfa04aeaeaa (ph1 = 174 / ph2 = 174 / checksum ok)
+Packet #29 @ 375.973191: pppppppppp111110111111101000000100101010101010100110110011t
+Packet data: fbfa04aaa9b3 (ph1 = 170 / ph2 = 169 / checksum ok)
+Packet #30 @ 389.238071: pppppppppp111110111111101000000100100111111010010111000010t
+Packet data: fbfa049fa5c2 (ph1 = 159 / ph2 = 165 / checksum ok)
+Packet #31 @ 402.528813: pppppppppp111110111111101000000100101000011000101111011010t
+Packet data: fbfa04a18bda (ph1 = 161 / ph2 = 139 / checksum ok)
+Packet #32 @ 415.818535: pppppppppp111110111111101000000100100010011001010011101001t
+Packet data: fbfa048994e9 (ph1 = 137 / ph2 = 148 / checksum ok)
+Packet #33 @ 429.129766: pppppppppp111110111111101000000100100101001001100011011010t
+Packet data: fbfa049498da (ph1 = 148 / ph2 = 152 / checksum ok)
+Packet #34 @ 442.467693: pppppppppp111110111111101000000100101000101001111111000101t
+Packet data: fbfa04a29fc5 (ph1 = 162 / ph2 = 159 / checksum ok)
+Packet #35 @ 455.832825: pppppppppp111110111111101000000100100111101010010011000100t
+Packet data: fbfa049ea4c4 (ph1 = 158 / ph2 = 164 / checksum ok)
+Packet #36 @ 469.228987: pppppppppp111110111111101000000100101001011010011110111010t
+Packet data: fbfa04a5a7ba (ph1 = 165 / ph2 = 167 / checksum ok)
+Packet #37 @ 482.646721: pppppppppp111110111111101000000100101000011010000111000100t
+Packet data: fbfa04a1a1c4 (ph1 = 161 / ph2 = 161 / checksum ok)
+Packet #38 @ 496.080183: pppppppppp111110111111101000000100100111111001111111001000t
+Packet data: fbfa049f9fc8 (ph1 = 159 / ph2 = 159 / checksum ok)
+
